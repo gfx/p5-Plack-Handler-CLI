@@ -137,16 +137,10 @@ sub _handle_response {
         print $stdout $hdrs;
     }
 
-    my $cb     = sub { print $stdout @_ };
-    my $body   = $res->[2];
-    if (defined $body) {
-        Plack::Util::foreach($body, $cb);
-    }
-    else {
-        return Plack::Util::inline_object
-            write => $cb,
-            close => sub { };
-    }
+    my $body = $res->[2];
+    my $cb   = sub { print $stdout @_ };
+    Plack::Util::foreach($body, $cb);
+    return;
 }
 
 no Mouse;
