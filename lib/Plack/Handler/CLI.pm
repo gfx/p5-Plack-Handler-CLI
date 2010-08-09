@@ -133,6 +133,8 @@ sub _handle_response {
     if($self->need_headers) {
         my $hdrs = "Status: $res->[_RES_STATUS]" . $CRLF;
 
+        $hdrs .= "Server: " . ref($self) . $CRLF;
+
         my $headers = $res->[_RES_HEADERS];
         while (my ($k, $v) = splice @$headers, 0, 2) {
             $hdrs .= "$k: $v" . $CRLF;

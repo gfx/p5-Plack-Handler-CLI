@@ -1,15 +1,20 @@
 #!perl -w
-
 use strict;
 use URI::Escape qw(uri_unescape);
+use Errno qw(ENOENT EPERM);
 use Plack::Request;
 
 our $VERSION = '1.0';
 
-sub err {
-    my(@msg) = @_;
+sub _request_error {
+    my($errno, @msg) = @_;
+    my $status =
+          $errno == ENOENT ? 404  # not found
+        : $errno == EPERM  ? 403  # permission denied
+        :                    400; # something wrong
+
     return [
-        500,
+        $status,
         [ 'Content-Type' => 'text/plain' ],
         \@msg,
     ];
@@ -18,16 +23,19 @@ sub err {
 sub main {
     my($env) = @_;
     my $req  = Plack::Request->new($env);
-    my $res  = $req->new_response(200);
+    my $res  = $req->new_response(
+        200,
+        ['Content-Type' => 'text/plain; charset=utf8'],
+    );
 
     if($req->param('version')) {
-        $res->body("cat.psgi version $VERSION on $env->{SERVER_SOFTWARE}\n");
+        $res->body("cat.psgi version $VERSION ($0)\n");
     }
     elsif($req->param('help')) {
         $res->body("cat.psgi [--version] [--help] files...\n");
     }
     else {
-        my @files = split '/', $req->path_info;
+        my @files = grep { length } split '/', $req->path_info;
 
         local $/;
 
@@ -36,7 +44,7 @@ sub main {
             foreach my $file(@files) {
                 my $f = uri_unescape($file);
                 open my $fh, '<', $f
-                    or return err("Cannot open '$f': $!\n");
+                    or return _request_error($!, "Cannot open '$f': $!\n");
 
                 push @contents, readline($fh);
             }
