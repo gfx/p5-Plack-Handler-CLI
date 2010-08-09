@@ -5,6 +5,7 @@ use inc::Module::Install;
 all_from 'lib/Plack/Handler/CLI.pm';
 
 requires 'Plack'       => 0.99;
+requires 'Mouse';
 requires 'URI::Escape';
 requires 'IO::Handle';
 
