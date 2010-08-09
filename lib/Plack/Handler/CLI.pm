@@ -78,6 +78,8 @@ sub run {
 
     my %env = (
         # HTTP
+        HTTP_USER_AGENT => sprintf('%s/%s', ref($self), $self->VERSION),
+
         HTTP_COOKIE  => '', # TODO?
         HTTP_HOST    => 'localhost',
 
@@ -87,6 +89,8 @@ sub run {
         QUERY_STRING   => $query,
         PATH_INFO      => $path_info,
         SCRIPT_NAME    => '',
+        REMOTE_ADDR    => '0.0.0.0',
+        REMOTE_USER    => $ENV{USER},
 
         # Server
         SERVER_PROTOCOL => 'HTTP/1.0',
