@@ -166,6 +166,7 @@ This document describes Plack::Handler::CLI version 0.01.
     #!perl -w
     # a cat(1) implementation on PSGI/CLI
     use strict;
+    use Plack::Handler::CLI;
     use URI::Escape qw(uri_unescape);
 
     sub err {
@@ -205,14 +206,8 @@ This document describes Plack::Handler::CLI version 0.01.
         ];
     }
 
-    if(caller) {
-        return \&main;
-    }
-    else {
-        require Plack::Handler::CLI;
-        my $handler = Plack::Handler::CLI->new(need_headers => 0);
-        $handler->run(\&main, @ARGV);
-    }
+    my $handler = Plack::Handler::CLI->new(need_headers => 0);
+    $handler->run(\&main, @ARGV);
 
 =head1 DESCRIPTION
 
