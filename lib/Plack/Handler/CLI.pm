@@ -155,7 +155,7 @@ __END__
 
 =head1 NAME
 
-Plack::Handler::CLI - Command line interface for Plack
+Plack::Handler::CLI - Command line interface for PSGI applications
 
 =head1 VERSION
 
@@ -218,7 +218,19 @@ for PSGI applications.
 
 =head2 B<< Plack::Handler::CLI->new(%options) : CLI >>
 
-=head2 B<< $cli->run(\&app, @argv) : Void >>
+Creates a Plack handler that implements a command line interface.
+
+PSGI headers will be printed by default, but you can suppress them
+by C<< need_headers => 0 >>.
+
+=head2 B<< $cli->run(\&psgi_app, @argv) : Void >>
+
+Runs I<&psgi_app> with I<@argv>.
+
+C<< "--key" => "value" >> (or C<< "--key=value" >>) pairs in I<@argv> are
+packed into C<QUERY_STRING>, while any other arguments are packed into
+C<PATH_INFO>, so I<&psgi_app> can get command line arguments
+as PSGI parameters.
 
 =head1 DEPENDENCIES
 
@@ -232,7 +244,9 @@ to cpan-RT.
 
 =head1 SEE ALSO
 
-L<perl>
+L<PSGI>
+
+L<Plack>
 
 =head1 AUTHOR
 
