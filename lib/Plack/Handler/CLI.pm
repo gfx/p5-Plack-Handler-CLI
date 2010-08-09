@@ -8,6 +8,12 @@ our $VERSION = '0.01';
 use IO::Handle  ();
 use Plack::Util ();
 
+use constant {
+    _RES_STATUS  => 0,
+    _RES_HEADERS => 1,
+    _RES_BODY    => 2,
+};
+
 BEGIN {
     if(eval { require URI::Escape::XS }) {
         *_uri_escape = \&URI::Escape::XS::encodeURIComponent;
@@ -126,9 +132,9 @@ sub _handle_response {
     $stdout->autoflush(1);
 
     if($self->need_headers) {
-        my $hdrs = "Status: $res->[0]" . $CRLF;
+        my $hdrs = "Status: $res->[_RES_STATUS]" . $CRLF;
 
-        my $headers = $res->[1];
+        my $headers = $res->[_RES_HEADERS];
         while (my ($k, $v) = splice @$headers, 0, 2) {
             $hdrs .= "$k: $v" . $CRLF;
         }
@@ -137,7 +143,7 @@ sub _handle_response {
         print $stdout $hdrs;
     }
 
-    my $body = $res->[2];
+    my $body = $res->[_RES_BODY];
     my $cb   = sub { print $stdout @_ };
     Plack::Util::foreach($body, $cb);
     return;
