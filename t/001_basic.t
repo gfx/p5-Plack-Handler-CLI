@@ -42,15 +42,15 @@ $cli->run(sub {
     my $req = Plack::Request->new(@_);
 
     is $req->path_info, 'a/b/c', 'path_info';
-    is $req->uri, 'http://localhost/a/b/c?foo=bar';
-    is $req->param('foo'), 'bar';
+    is $req->uri, 'http://localhost/a/b/c?foo=bar%3Dbaz';
+    is $req->param('foo'), 'bar=baz';
 
     return [
         200,
         ['Content-Type' => 'text/plain'],
         ['Hello, world!'],
    ];
-}, '--foo' => 'bar', 'a', 'b', 'c');
+}, '--foo' => 'bar=baz', 'a', 'b', 'c');
 
 unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
 is $s, 'Hello, world!';

@@ -58,10 +58,9 @@ sub run {
         if($s =~ s/\A -- //xms) {
             my($name, $value) = split /=/, $s, 2;
             if(not defined $value) {
-                $value = shift @argv;
-                if(not defined $value) {
-                    die "Arguments must be key-value pairs\n";
-                }
+                $value = @argv
+                    ? shift(@argv)
+                    : Plack::Util::TRUE;
             }
             push @params, join '=',
                 _uri_escape($name) => _uri_escape($value);
