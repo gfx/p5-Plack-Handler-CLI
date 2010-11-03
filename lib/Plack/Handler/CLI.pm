@@ -5,7 +5,7 @@ use Mouse;
 
 our $VERSION = '0.01';
 
-use IO::Handle  ();
+use IO::Handle  (); # autoflush
 use Plack::Util ();
 
 use constant {
