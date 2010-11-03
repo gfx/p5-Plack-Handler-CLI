@@ -17,5 +17,5 @@ if(caller) {
 else {
     require Plack::Handler::CLI;
     my $handler = Plack::Handler::CLI->new();
-    $handler->run(\&main, @ARGV);
+    $handler->run(\&main, \@ARGV);
 }
