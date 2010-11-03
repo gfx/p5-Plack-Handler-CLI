@@ -35,19 +35,19 @@ has need_headers => (
 has stdin => (
     is      => 'ro',
     isa     => 'FileHandle',
-    default => *STDIN,
+    default => sub { \*STDIN },
 );
 
 has stdout => (
     is      => 'ro',
     isa     => 'FileHandle',
-    default => *STDOUT,
+    default => sub { \*STDOUT },
 );
 
 has stderr => (
     is      => 'ro',
     isa     => 'FileHandle',
-    default => *STDERR,
+    default => sub { \*STDERR },
 );
 
 sub run {
@@ -160,7 +160,7 @@ __END__
 
 =head1 NAME
 
-Plack::Handler::CLI - Command line interface for PSGI applications
+Plack::Handler::CLI - Command line interface to PSGI applications
 
 =head1 VERSION
 
