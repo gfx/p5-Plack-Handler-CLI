@@ -51,7 +51,9 @@ has stderr => (
 );
 
 sub run {
-    my($self, $app, @argv) = @_;
+    my($self, $app, $argv_ref) = @_;
+
+    my @argv = $argv_ref ? @{$argv_ref} : @ARGV;
 
     my @params;
     while(defined(my $s = shift @argv)) {
@@ -212,7 +214,7 @@ This document describes Plack::Handler::CLI version 0.01.
     }
 
     my $handler = Plack::Handler::CLI->new(need_headers => 0);
-    $handler->run(\&main, @ARGV);
+    $handler->run(\&main);
 
 =head1 DESCRIPTION
 

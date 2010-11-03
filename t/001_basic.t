@@ -23,12 +23,12 @@ my $out;
 open $out, '>', \$s;
 my $cli = Plack::Handler::CLI->new(stdout => $out);
 
-$cli->run(\&hello, '--lang' => 'PSGI/CLI');
+$cli->run(\&hello, ['--lang' => 'PSGI/CLI']);
 like $s, qr/Status: \s+ 200/xmsi, 'status';
 like $s, qr{Hello, PSGI/CLI world!}, 'content';
 
 open $out, '>', \$s;
-$cli->run(\&hello, '--lang=Foo');
+$cli->run(\&hello, ['--lang=Foo']);
 like $s, qr/Status: \s+ 200/xmsi, 'status';
 like $s, qr{Hello, Foo world!}, 'content';
 
@@ -50,7 +50,7 @@ $cli->run(sub {
         ['Content-Type' => 'text/plain'],
         ['Hello, world!'],
    ];
-}, '--foo' => 'bar=baz', 'a', 'b', 'c');
+}, ['--foo' => 'bar=baz', 'a', 'b', 'c']);
 
 unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
 is $s, 'Hello, world!';

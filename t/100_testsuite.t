@@ -1,12 +1,11 @@
 #!perl -w
-
 use strict;
 use Test::More;
+use Plack::Test::Suite;
+use HTTP::Request::AsCGI;
 
 use Plack::Handler::CLI;
 
-use HTTP::Request::AsCGI;
-use Plack::Test::Suite;
 Plack::Test::Suite->runtests(sub {
     my ($name, $test, $app) = @_;
 
