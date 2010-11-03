@@ -53,7 +53,20 @@ has stderr => (
 sub run {
     my($self, $app, $argv_ref) = @_;
 
-    my @argv = $argv_ref ? @{$argv_ref} : @ARGV;
+    my @argv;
+    if($argv_ref) {
+        @argv = @{$argv_ref};
+    }
+    else {
+        # skip after *.psgi
+        @argv = @ARGV;
+        if(grep { /\.psgi \z/xms } @argv) {
+            while(@argv) {
+                my $a = shift @argv;
+                last if $a =~ /\.psgi \z/xms;
+            }
+        }
+    }
 
     my @params;
     while(defined(my $s = shift @argv)) {
