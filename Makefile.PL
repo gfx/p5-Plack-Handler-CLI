@@ -4,8 +4,8 @@ use inc::Module::Install;
 
 all_from 'lib/Plack/Handler/CLI.pm';
 
-requires 'Plack'       => 0.99;
-requires 'Mouse';
+requires 'Plack' => 0.99;
+requires 'Any::Moose';
 requires 'URI::Escape';
 requires 'IO::Handle';
 
@@ -16,7 +16,7 @@ test_requires 'Test::More' => 0.88; # done_testing()
 tests_recursive;
 author_tests 'xt';
 
-#auto_set_repository() if -d '.git';
+auto_set_repository() if -d '.git';
 
 clean_files qw(
     Plack-Handler-CLI-* *.stackdump

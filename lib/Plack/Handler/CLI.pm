@@ -1,7 +1,6 @@
 package Plack::Handler::CLI;
-
 use 5.008_001;
-use Mouse;
+use Any::Moose;
 
 our $VERSION = '0.01';
 
@@ -126,6 +125,7 @@ sub run {
 
         %ENV, # override
     );
+    $env{SCRIPT_NAME} = '' if $env{SCRIPT_NAME} eq '/';
 
     my $res = Plack::Util::run_app($app, \%env);
 
@@ -169,7 +169,7 @@ sub _handle_response {
     return;
 }
 
-no Mouse;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 __END__
 
@@ -274,7 +274,7 @@ Goro Fuji (gfx) E<lt>gfuji(at)cpan.orgE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2010, Goro Fuji (gfx). All rights reserved.
+Copyright (c) 2011, Goro Fuji (gfx). All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. See L<perlartistic> for details.
