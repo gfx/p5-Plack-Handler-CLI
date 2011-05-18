@@ -7,11 +7,11 @@ all_from 'lib/Plack/Handler/CLI.pm';
 requires 'Plack' => 0.99;
 requires 'Any::Moose';
 requires 'URI::Escape';
-requires 'IO::Handle';
 
 recommends 'URI::Escape::XS' => 0.07;
 
 test_requires 'Test::More' => 0.88; # done_testing()
+test_requires 'HTTP::Request::AsCGI';
 
 tests_recursive;
 author_tests 'xt';

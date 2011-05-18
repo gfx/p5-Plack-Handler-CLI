@@ -1,5 +1,8 @@
 Revision history for Perl extension Plack::Handler::CLI
 
+0.02 2011-05-18 21:21:59
+    - Fix prerequistes
+
 0.01 2011-05-11 08:11:57
     - First release!
 
