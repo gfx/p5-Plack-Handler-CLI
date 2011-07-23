@@ -1,14 +1,26 @@
 #!perl -w
-
 use strict;
+use Test::Requires qw(Router::Simple);
 use Test::More;
 
 use Plack::Handler::CLI;
 use Plack::Request;
 
+my $router = Router::Simple->new();
+
+$router->connect('/',      {controller => 'Root', action => 'index'});
+$router->connect('/hello', {controller => 'Root', action => 'hello'});
+
 sub hello {
     my($env) = @_;
     my $req = Plack::Request->new($env);
+
+    note 'PATH_INFO=', $env->{REQUEST_URI};
+    note 'PATH_INFO=', $env->{PATH_INFO};
+    my $p = $router->match($env);
+
+    ok $p, 'router matched';
+    is $p->{controller}, 'Root';
 
     my $lang = $req->param('lang');
     return [
@@ -39,18 +51,23 @@ $cli = Plack::Handler::CLI->new(
 
 open $out, '>', \$s;
 $cli->run(sub {
-    my $req = Plack::Request->new(@_);
+    my($env) = @_;
+    my $req = Plack::Request->new($env);
 
-    is $req->path_info, '/a/b/c', 'path_info';
-    is $req->uri, 'http://localhost/a/b/c?foo=bar%3Dbaz';
+    is $req->path_info, '/hello', 'path_info';
+    is $req->uri, 'http://localhost/hello?foo=bar%3Dbaz';
     is $req->param('foo'), 'bar=baz';
+
+    my $p = $router->match($env);
+    is $p->{controller}, 'Root';
+    is $p->{action},     'hello';
 
     return [
         200,
         ['Content-Type' => 'text/plain'],
         ['Hello, world!'],
    ];
-}, ['--foo' => 'bar=baz', 'a', 'b', 'c']);
+}, ['--foo' => 'bar=baz', 'hello']);
 
 unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
 is $s, 'Hello, world!';

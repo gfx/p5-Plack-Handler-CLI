@@ -85,9 +85,10 @@ sub run {
         }
     }
 
-    my $path_info = join '/', map { _uri_escape($_) } @argv;
+    my $path_info = '/' . join '/', map { _uri_escape($_) } @argv;
     my $query     = join ';', @params;
-    my $uri       = 'http://localhost/' . $path_info;
+
+    my $uri       = 'http://localhost' . $path_info;
     $uri .= "?$query" if length($query);
 
     my %env = (
