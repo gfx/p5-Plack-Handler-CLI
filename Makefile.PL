@@ -12,6 +12,7 @@ recommends 'URI::Escape::XS' => 0.07;
 
 test_requires 'Test::More' => 0.88; # done_testing()
 test_requires 'HTTP::Request::AsCGI';
+test_requires 'Test::Requires';
 
 tests_recursive;
 author_tests 'xt';
