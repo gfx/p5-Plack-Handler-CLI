@@ -6,6 +6,7 @@ our $VERSION = '0.03';
 
 use IO::Handle  (); # autoflush
 use Plack::Util ();
+use URI ();
 
 use constant {
     _RES_STATUS  => 0,
@@ -76,8 +77,7 @@ sub run {
                     ? shift(@argv)
                     : Plack::Util::TRUE;
             }
-            push @params, join '=',
-                _uri_escape($name) => _uri_escape($value);
+            push @params, $name, $value;
         }
         else {
             unshift @argv, $s; # push back
@@ -85,24 +85,28 @@ sub run {
         }
     }
 
-    my $path_info = '/' . join '/', map { _uri_escape($_) } @argv;
-    my $query     = join ';', @params;
+    my $uri = URI->new();
+    if ( @argv &&  $argv[0] =~ m{\Ahttp} ) {
+    	$uri = URI->new(shift @argv);
+    }
 
-    my $uri       = 'http://localhost' . $path_info;
-    $uri .= "?$query" if length($query);
+    $uri->scheme('http') if not $uri->scheme;
+    $uri->host('localhost') if not $uri->host;
+    $uri->path_segments($uri->path_segments, @argv);
+    $uri->query_form($uri->query_form, @params);
 
     my %env = (
         # HTTP
         HTTP_USER_AGENT => sprintf('%s/%s', ref($self), $self->VERSION),
 
         HTTP_COOKIE  => '', # TODO?
-        HTTP_HOST    => 'localhost',
+        HTTP_HOST    => $uri->host,
 
         # Client
         REQUEST_METHOD => 'GET',
         REQUEST_URI    => $uri,
-        QUERY_STRING   => $query,
-        PATH_INFO      => $path_info,
+        QUERY_STRING   => $uri->query,
+        PATH_INFO      => $uri->path || '/',
         SCRIPT_NAME    => '',
         REMOTE_ADDR    => '0.0.0.0',
         REMOTE_USER    => $ENV{USER},
@@ -115,7 +119,7 @@ sub run {
 
         # PSGI
         'psgi.version'      => [1,1],
-        'psgi.url_scheme'   => 'http', # mock :)
+        'psgi.url_scheme'   => $uri->scheme,
         'psgi.input'        => $self->stdin,
         'psgi.errors'       => $self->stderr,
         'psgi.multithread'  => Plack::Util::FALSE,
@@ -248,10 +252,11 @@ by C<< need_headers => 0 >>.
 
 Runs I<&psgi_app> with I<@argv>.
 
-C<< "--key" => "value" >> (or C<< "--key=value" >>) pairs in I<@argv> are
-packed into C<QUERY_STRING>, while any other arguments are packed into
-C<PATH_INFO>, so I<&psgi_app> can get command line arguments
-as PSGI parameters.
+C<< "--key" => "value" >> (or C<< "--key=value" >>) pairs in I<@argv>
+are packed into C<QUERY_STRING>, while any other arguments are packed
+into C<PATH_INFO>, so I<&psgi_app> can get command line arguments as
+PSGI parameters. The first element of I<@argv> after the query parameters
+could also be a absolute URL.
 
 =head1 DEPENDENCIES
 
