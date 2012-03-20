@@ -32,13 +32,17 @@ $cli->run(\&hello, ['--lang=Foo']);
 like $s, qr/Status: \s+ 200/xmsi, 'status';
 like $s, qr{Hello, Foo world!}, 'content';
 
+open $out, '>', \$s;
+$cli->run(\&hello, ['http://localhost?lang=Foo']);
+like $s, qr/Status: \s+ 200/xmsi, 'status';
+like $s, qr{Hello, Foo world!}, 'content';
+
 $cli = Plack::Handler::CLI->new(
     stdout       => $out,
     need_headers => 0,
 );
 
-open $out, '>', \$s;
-$cli->run(sub {
+sub hello2 {
     my $req = Plack::Request->new(@_);
 
     is $req->path_info, '/a/b/c', 'path_info';
@@ -50,8 +54,20 @@ $cli->run(sub {
         ['Content-Type' => 'text/plain'],
         ['Hello, world!'],
    ];
-}, ['--foo' => 'bar=baz', 'a', 'b', 'c']);
+}
 
+open $out, '>', \$s;
+$cli->run(\&hello2, ['--foo' => 'bar=baz', 'a', 'b', 'c']);
+unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
+is $s, 'Hello, world!';
+
+open $out, '>', \$s;
+$cli->run(\&hello2, ['--foo' => 'bar=baz', 'http://localhost/a/b/c']);
+unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
+is $s, 'Hello, world!';
+
+open $out, '>', \$s;
+$cli->run(\&hello2, ['http://localhost/a/b/c?foo=bar%3Dbaz']);
 unlike $s, qr/Status: \s+ 200/xmsi, 'need_headers => 0';
 is $s, 'Hello, world!';
 
