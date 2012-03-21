@@ -1,5 +1,8 @@
 Revision history for Perl extension Plack::Handler::CLI
 
+0.04 2012-03-21 09:30:21
+    - first parameter of @argv can also be an url (mdom)
+
 0.03 2011-07-23 17:12:25
     - PATH_INFO should start '/', otherwise Router::Simple didn't work
 

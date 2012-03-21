@@ -2,7 +2,7 @@ package Plack::Handler::CLI;
 use 5.008_001;
 use Any::Moose;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use IO::Handle  (); # autoflush
 use Plack::Util ();
@@ -184,7 +184,7 @@ Plack::Handler::CLI - Command line interface to PSGI applications
 
 =head1 VERSION
 
-This document describes Plack::Handler::CLI version 0.03.
+This document describes Plack::Handler::CLI version 0.04.
 
 =head1 SYNOPSIS
 

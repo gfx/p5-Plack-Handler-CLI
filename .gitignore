@@ -1,5 +1,6 @@
 Plack-Handler-CLI-*
 .*
+*~
 !.gitignore
 !.shipit
 *.o
