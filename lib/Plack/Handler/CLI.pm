@@ -241,14 +241,14 @@ for PSGI applications.
 
 =head1 INTERFACE
 
-=head2 B<< Plack::Handler::CLI->new(%options) : CLI >>
+=head2 C<< Plack::Handler::CLI->new(%options) >>
 
 Creates a Plack handler that implements a command line interface.
 
 PSGI headers will be printed by default, but you can suppress them
 by C<< need_headers => 0 >>.
 
-=head2 B<< $cli->run(\&psgi_app, @argv) : Void >>
+=head2 C<< $cli->run(\&psgi_app, @argv) : Void >>
 
 Runs I<&psgi_app> with I<@argv>.
 

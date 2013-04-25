@@ -23,3 +23,10 @@ cover_db*
 *.gno
 *.gcov
 *.stackdump
+/Plack-Handler-CLI-*
+/.build
+/_build_params
+/Build
+!Build/
+!META.json
+!LICENSE

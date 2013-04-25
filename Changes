@@ -1,5 +1,7 @@
 Revision history for Perl extension Plack::Handler::CLI
 
+{{$NEXT}}
+
 0.04 2012-03-21 09:30:21
     - first parameter of @argv can also be an url (mdom)
 
