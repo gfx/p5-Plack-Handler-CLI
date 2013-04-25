@@ -1,6 +1,6 @@
 package Plack::Handler::CLI;
 use 5.008_001;
-use Any::Moose;
+use Mouse;
 
 our $VERSION = '0.04';
 
@@ -174,7 +174,7 @@ sub _handle_response {
     return;
 }
 
-no Any::Moose;
+no Mouse;
 __PACKAGE__->meta->make_immutable();
 __END__
 
