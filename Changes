@@ -2,6 +2,9 @@ Revision history for Perl extension Plack::Handler::CLI
 
 {{$NEXT}}
 
+0.05 2013-04-25T15:59:26Z
+    - Switch to Mouse, instead of Any::Moose
+
 0.04 2012-03-21 09:30:21
     - first parameter of @argv can also be an url (mdom)
 

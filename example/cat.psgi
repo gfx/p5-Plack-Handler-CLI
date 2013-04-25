@@ -4,7 +4,7 @@ use URI::Escape qw(uri_unescape);
 use Errno qw(ENOENT EPERM);
 use Plack::Request;
 
-our $VERSION = '1.0';
+our $VERSION = '0.05';
 
 sub _request_error {
     my($errno, @msg) = @_;

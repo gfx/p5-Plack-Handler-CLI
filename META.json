@@ -71,7 +71,7 @@
          "web" : "https://github.com/gfx/p5-Plack-Handler-CLI"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_contributors" : [
       "Fuji, Goro <g.psy.va@mail.com>",
       "Mario Domgoergen <mdom@taz.de>",

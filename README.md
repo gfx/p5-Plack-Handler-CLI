@@ -4,7 +4,7 @@ Plack::Handler::CLI - Command line interface to PSGI applications
 
 # VERSION
 
-This document describes Plack::Handler::CLI version 0.04.
+This document describes Plack::Handler::CLI version 0.05.
 
 # SYNOPSIS
 
