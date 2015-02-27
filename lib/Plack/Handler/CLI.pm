@@ -245,8 +245,24 @@ for PSGI applications.
 
 Creates a Plack handler that implements a command line interface.
 
+=item B<need_headers =E<gt> (1|0)>
+
 PSGI headers will be printed by default, but you can suppress them
 by C<< need_headers => 0 >>.
+
+B<NOTE:> Default value is I<1>.
+
+=item B<stdin =E<gt> $FileHandle>
+
+B<NOTE:> Default value is I<STDIN>.
+
+=item B<stdout =E<gt> $FileHandle>
+
+B<NOTE:> Default value is I<STDOUT>.
+
+=item B<stderr =E<gt> $FileHandle>
+
+B<NOTE:> Default value is I<STDERR>.
 
 =head2 C<< $cli->run(\&psgi_app, @argv) : Void >>
 
